@@ -212,7 +212,7 @@ layout = html.Div(
             ),
             dbc.Col(
                dcc.Graph(figure=categorysegmentsalesdistribution, responsive = True)
-            ),
+            )
          ]
       ),
       dbc.Row(
