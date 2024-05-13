@@ -239,7 +239,7 @@ layout = html.Div(
         dbc.Row(
             children = [
                 dbc.Col(
-                    children = dcc.Graph("sales_category_distribution", responsive=True)
+                    children = dcc.Graph(id="sales_category_distribution", responsive=True)
                 ),
                 dbc.Col(
                     children = dcc.Graph(figure = segment_sales_distribution, responsive=True)
