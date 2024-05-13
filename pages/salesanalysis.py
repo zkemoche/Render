@@ -295,8 +295,7 @@ layout = html.Div(
 
 @callback(
    Output("sales_category_distribution", "figure"),
-   Input("City_dropdown", 'value'),
-   Input("region_radio_items", 'value')
+   Input("City_dropdown", 'value')
 )
 
 def update_sales_category_distribution(city_value,region_value):
