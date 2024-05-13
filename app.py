@@ -1,4 +1,4 @@
-#.venv/Scripts/activate
+# .venv/Scripts/activate
 import dash
 from dash import Dash,html,dcc
 import dash_bootstrap_components as dbc
@@ -20,16 +20,17 @@ app.layout = html.Div(
                 dbc.Col(
                     children = sidebar,
                     width = 1
+                    
                 ),
                 dbc.Col(
                     children = [
                         dash.page_container
-                    ],
+                    ]
                 )
             ]
         )
     ],
-    className = "bg-dark"
+    className = "bg-black"
 )
 
 if __name__ == '__main__':
