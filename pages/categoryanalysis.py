@@ -1,11 +1,12 @@
 import dash
-from dash import html, dcc, dash_table, callback, Output, Input
+from dash import html, dcc, callback, Output, Input, dash_table
 import pandas as pd
 import plotly.express as px
 import dash_bootstrap_components as dbc
 from dash.dash_table import FormatTemplate
+import dash_ag_grid as dag
 
-dash.register_page(__name__, path="/productanalysis", title='Product Analysis', name='Product Analysis')
+dash.register_page(__name__, path="/categoryanalysis", title='Category Analysis', name='Category Analysis')
 
 superstore = pd.read_csv('data/Superstore.csv', encoding='latin1')
 
@@ -52,44 +53,27 @@ monthlycategorytrenddistribution.update_xaxes(showgrid = False, gridcolor = 'rgb
 
 # Products Table
 
-products_table = dash_table.DataTable(
-   data = superstore.to_dict('records'), 
-   id = "tweets-table",
-   columns=[
-      {"name": "Product ID", "id": "Product ID", 'type': 'text', 'presentation' : 'input'},
-      {"name": "Category", "id": "Category"},
-      {"name": "Sub-Category", "id": "Sub-Category"},
-      {"name": "Product Name", "id": "Product Name"},
-      {"name": "Profit", "id": "Profit", "type": 'numeric', "format" :FormatTemplate.money(2)}
-   ],
-   page_size = 10,
-   style_data={
-      'whiteSpace': 'normal',
-      'backgroundColor': 'transparent',
-      'color': 'white',
-      'margin': '10px 0',
-      'height': 80
-   },
-   filter_action="native",
-   filter_options={
-      "placeholder_text" : "Search for a value"
-   },
-   style_filter={"backgroundColor" : "transparent", "color" : "#cba052", 'textAlign': 'left'},
-   sort_action="native",
-   style_header={
-      'backgroundColor': 'transparent', "color" : "#cba052"
-   },
-   style_cell_conditional=[
-      {'if': {'column_id': 'Product ID'}, 'textAlign' : "center", 'width': '15%'},
-      {'if': {'column_id': 'Category'}, 'textAlign' : "center", 'width': '10%'},
-      {'if': {'column_id': 'Sub-Category'}, 'textAlign' : "center", 'width': '15%'},
-      {'if': {'column_id': 'Product Name'}, 'textAlign' : "right", 'width': '50%'},
-      {'if': {'column_id': 'Profit'}, 'textAlign' : "right", 'width': '10%'},
-   ],
-   style_cell={'textAlign': 'left', 'backgroundColor': 'transparent', 'font-family': 'Arial'},
-   style_as_list_view=True,
-   css=[{'selector': '::placeholder', 'rule': 'color: #cba052;'}]  
+products_table = dash_table.DataTable(superstore.to_dict('records'), [
+                                       {"name": "Product ID", "id": "Product ID"}, 
+                                       {"name": " Customer Name", "id": "Customer Name"}, 
+                                       {"name": "Segment", "id": "Segment"}, 
+                                       {"name": "City", "id": "City"},
+                                       {"name": "Category", "id": "Category"},
+                                       {"name": "Profit", "id": "Profit"}],
+                                       fixed_rows={'headers': True},
+                                       style_data={'color': 'white','backgroundColor': 'rgb(50, 50, 50)'},
+                                       style_header={'backgroundColor': 'rgb(30, 30, 30)','fontWeight': 'bold','color': 'white', 'border': '1px solid white'},
+                                       style_cell={'textAlign': 'left','border': '1px solid white'},
+                                       style_table={'height': '400px', 'overflowY': 'auto'},
+                                       style_data_conditional=[{'if': {'filter_query': '{Profit} < 0','column_id': 'Profit'},
+                                                                'color': 'red'},
+                                                                {'if': {'filter_query': '{Profit} > 0','column_id': 'Profit'},
+                                                                'color': 'green'},
+                                                               ]
+
 )
+
+
 
 # Layout
 layout = html.Div(
@@ -123,7 +107,7 @@ layout = html.Div(
       dbc.Row(
          dcc.Graph(figure=monthlycategorytrenddistribution, responsive = True)
       ),
-      dbc.Row(
+      dbc.Container(
          products_table
       )
    ],

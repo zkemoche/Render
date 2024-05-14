@@ -115,22 +115,25 @@ salesquantitydist.update_traces(marker_line_width=0, textfont_size=12, textfont_
 
 salesquantitydist.add_trace(segmentsales.data[0])
 
-# Products Table AG-Grid
 
+# Products Table AG Grid
 products_table_ag_grid = dag.AgGrid(
-   rowData = superstore.to_dict('records'), 
+   rowData = superstore.to_dict('records'),
    id = "products-table",
    columnDefs=[
-      {"field": "Product ID", 'presentation' : 'input'},
-      {"field": "Category", 'filter': True},
-      {"field": "Sub-Category", 'filter': True},
-      {"field": "Product Name", 'filter': True},
-      {"field": "Profit", "format" :FormatTemplate.money(2)}
+      {"field":"Product ID", 'filter': True},
+      {"field":"Customer Name", 'headerName':'Customer', 'filter': True},
+      {"field":"Segment", 'filter': True},
+      {"field":"City", 'filter': True},
+      {"field":"Category", 'filter': True},
+      {"field":"Profit", 'filter': True},
+      
    ],
    className="ag-theme-alpine-dark",
-   columnSize="sizeToFit",
-   dashGridOptions={'pagination':True},
+            columnSize="sizeToFit",
+            dashGridOptions={'pagination':True},
 )
+
 
 # Layout
 layout = html.Div(
